@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --job-name=hifiasm      # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=your@email.com  # Where to send mail
+#SBATCH --ntasks=1                   # Run a single task
+#SBATCH --cpus-per-task=32            # Number of CPU cores per task
+#SBATCH --mem=220gb            # Job memory request
+#SBATCH --time=03-00:00:00              # Time limit days-hrs:min:sec
+#SBATCH --output=2_hifiasm_%j.log     # Standard output and error log
+#SBATCH --chdir=/path/to/hifiadapterfilt_out
+
+
+source activate /scratch/jr4253/miniconda3/envs/assembly
+
+hifiasm -o NES739 -t 32 NES739.hifi_reads.filt.fastq.gz
+
+
+conda deactivate
