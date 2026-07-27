@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=mark_dupes           # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL      # Mail notifications
+#SBATCH --mail-user=your@email.com      # Email for notifications
+#SBATCH --nodes=1                       # Number of nodes
+#SBATCH --ntasks-per-node=4             # Number of tasks per node
+#SBATCH --mem=64gb                      # Memory
+#SBATCH --time=01-00:00:00              # Time limit (D-HH:MM:SS)
+#SBATCH --output=3_picard_dict_%j.log    # Output log file
+#SBATCH --chdir=/scratch/jr4253/NES739_assembly/NES739_Referee
+
+# Load Picard module
+module load picard/2.24.1
+
+java -jar picard.jar CreateSequenceDictionary R=NES739_hifi_filtered_no_hit.fasta O=NES739_reference.dict
