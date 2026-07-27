@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --job-name=minimap2_referee
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=your@email.com
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem=20gb
+#SBATCH --time=01-00:00:00
+#SBATCH --output=01_minimap2_referee_%j.log
+#SBATCH --chdir=/scratch/jr4253/NES739_assembly/NES739_Referee
+
+set -euo pipefail
+export PATH=/scratch/jr4253/miniconda3/envs/minimap2_env/bin:$PATH
+
+
+REF=NES739_hifi_filtered_no_hit.fasta
+READS=NES739.hifi_reads.filter.fastq
+SAM=NES739_reads_mapped_to_NES739.sam
+
+
+minimap2 \
+  -ax map-hifi \
+  -t 10 \
+  "$REF" \
+  "$READS" \
+  > "$SAM"
+
