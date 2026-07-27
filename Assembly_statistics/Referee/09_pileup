@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH --job-name=sam_pileup # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=your@email.com     # Where to send mail
+#SBATCH --nodes=1-1                   # Run a single task
+#SBATCH --ntasks-per-node=10            # Number of CPU cores per task
+#SBATCH --mem=80gb            # Job memory request
+#SBATCH --time=00-00:05:00              # Time limit days-hrs:min:sec
+#SBATCH --output=parallel_%j.log     # Standard output and error log
+#SBATCH --chdir=/scratch/jr4253/NES739_assembly/NES739_Referee
+
+module load samtools/1.15.1
+
+
+
+samtools mpileup -d 999999999 -f NES739_hifi_filtered_no_hit.fasta -Q 0 -s -B -o reads.pileup NES739_reads_mapped_hd_sorted.bam
