@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH --job-name=uce_probe_map
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=your@email.com
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem=20gb
+#SBATCH --time=00-02:00:00
+#SBATCH --output=01_bwa_%j.log
+#SBATCH --chdir=/scratch/jr4253/NES739_assembly/NES739_Referee
+
+set -euo pipefail
+
+
+module load bwa/0.7.17
+
+
+
+bwa index NES739_hifi_filtered_no_hit.fasta
