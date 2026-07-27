@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --job-name=quast # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=your@email.com     # Where to send mail
+#SBATCH --nodes=1-1                   # Run a single task
+#SBATCH --ntasks-per-node=12            # Number of CPU cores per task
+#SBATCH --mem=80gb            # Job memory request
+#SBATCH --time=00-01:00:00              # Time limit days-hrs:min:sec
+#SBATCH --output=parallel_%j.log     # Standard output and error log
+#SBATCH --chdir=/path/to/NES739_purge_haplotigs/NES739_Blob/polished_assembly_fasta/filtered_no_hit
+
+module load anaconda3
+
+export output_DIR=quast_NES739_nohit_results
+
+mkdir -p $output_DIR
+
+python3 /scratch/jr4253/quast/quast.py \
+    NES739_hifi_filtered_no_hit.fasta \
+    -o quast_NES739_nohit_results \
+    -t 12 \
+    -e
+# QUAST can be conducted after assembly too.
