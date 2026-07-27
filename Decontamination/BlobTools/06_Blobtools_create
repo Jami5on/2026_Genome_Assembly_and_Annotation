@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --job-name=btk_create # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=your@email.com     # Where to send mail
+#SBATCH --nodes=1-1                   # Run a single task
+#SBATCH --ntasks-per-node=10            # Number of CPU cores per task
+#SBATCH --mem=80gb            # Job memory request
+#SBATCH --time=00-00:10:00              # Time limit days-hrs:min:sec
+#SBATCH --output=parallel_%j.log     # Standard output and error log
+#SBATCH --chdir=/path/to/NES739_purge_haplotigs
+
+module load anaconda3
+source ~/.bashrc
+conda activate btk
+
+blobtools create --fasta NES739_curated.fasta --hits NES739.megablast.outfmt6 --taxid 7041 --taxdump /scratch/jr4253/btk_taxdump/ --replace NES739_Blob
+# taxid=7041 Coleoptera
