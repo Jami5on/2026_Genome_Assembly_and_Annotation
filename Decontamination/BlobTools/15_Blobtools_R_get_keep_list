@@ -1,0 +1,11 @@
+#R script in working directory: get_keep_list_from_blobtools_table_739.R
+
+
+blob <- read.delim("NES739_filtered_summary_table.tsv")
+IDs <- as.data.frame(blob[,2])
+write.table(IDs, file = "keep_list_with_no_hit.txt", quote = F, row.names = F, col.names = F)
+
+#Submit via the terminal:
+
+module load R/4.5.1
+Rscript write_blobtools_summary_table_739.R
