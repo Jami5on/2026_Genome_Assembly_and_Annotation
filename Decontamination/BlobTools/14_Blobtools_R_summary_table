@@ -1,0 +1,24 @@
+Rscript in working directory: write_blobtools_summary_table_739.R
+
+
+library(dplyr)
+
+blob <- read.delim("NES739_filtered_summary_table.tsv", check.names = FALSE)
+
+summary_table <- blob %>%
+  group_by(bestsumorder_phylum) %>%
+  summarise(
+    n_contigs = n(),
+    total_length = sum(length),
+    mean_cov = mean(NES739.curated.sorted_cov),
+    mean_gc = mean(gc)
+  ) %>%
+  arrange(desc(total_length))
+
+write.table(summary_table, file = "NES739_filtered_summary_table.txt", 
+            row.names = FALSE, sep = "\t", quote = FALSE)
+
+Submit via the terminal:
+
+module load R/4.5.1
+Rscript write_blobtools_summary_table_739.R
