@@ -1,0 +1,37 @@
+Make a conda environment and download the dependencies
+You will also need to close the github: https://github.com/sheinasim-USDA/HiFiAdapterFilt/blob/master/README.md
+
+conda create -n hifi_adapter_filt python=3.9
+module avail for dependencies:
+blast/2.13.0
+bamtools/2.5.2
+pigz/2.7-6xlq
+
+
+#!/bin/bash
+#SBATCH --job-name=hifiadapt
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=your@email.com
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=03-00:00:00
+#SBATCH --output=hifiadapt_%j.log
+#SBATCH --chdir=/path/to/your/reads
+
+module load anaconda3
+module load blast/2.13.0
+module load pigz/2.7-6xlq
+module load bamtools/2.5.2
+
+source ~/.bashrc
+conda activate hifi_adapter_filt
+
+mkdir -p hifiadapterfilt_out
+
+/scratch/jr4253/HiFiAdapterFilt/hifiadapterfilt.sh \
+  -p NES739 \
+  -t 16 \
+  -l 44 \
+  -m 97 \
+  -o hifiadapterfilt_out
