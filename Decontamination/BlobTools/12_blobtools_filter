@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --job-name=btk_filter
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=your@email.com
+#SBATCH --nodes=1-1
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem=80gb
+#SBATCH --time=00-00:05:00
+#SBATCH --output=parallel_%j.log
+#SBATCH --chdir=/path/to/NES739_purge_haplotigs/NES739_Blob
+
+module load anaconda3
+module load R/4.5.1
+source ~/.bashrc
+conda activate btk
+
+mkdir -p polished_assembly_fasta
+
+export input_assembly_DIR=/path/to/hifiasm/output
+export polished_assembly_DIR=${PWD}/polished_assembly_fasta
+export who_to_remove=no-hit
+
+blobtools filter \
+     --param length--Min=1000 \
+     --param NES739.curated.sorted_cov--Min=0.1 \
+     --param bestsumorder_phylum--Keys=${who_to_remove} \
+     --fasta ${input_assembly_DIR}/NES739.bp.p_ctg.fa \
+     --output ${polished_assembly_DIR}/filtered_no_hit \
+     ${PWD}
