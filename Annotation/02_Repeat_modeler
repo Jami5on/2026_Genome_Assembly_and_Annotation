@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --job-name=repeatmodel     # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=your@email.com  # Where to send mail
+#SBATCH --ntasks=1                   # Run a single task
+#SBATCH --cpus-per-task=10            # Number of CPU cores per task
+#SBATCH --mem=240gb            # Job memory request
+#SBATCH --time=07-00:00:00              # Time limit days-hrs:min:sec
+#SBATCH --output=repeat_model_%j.log     # Standard output and error log
+#SBATCH --chdir=/path/to/polished_assembly_fasta
+
+
+source /scratch/jr4253/miniconda3/etc/profile.d/conda.sh
+conda activate /scratch/jr4253/miniconda3/envs/repeatmodeler
+
+
+BuildDatabase -name NES739_polished NES739_hifi_filtered_no_hit.fasta
+
+
+RepeatModeler -database NES739_polished -threads 10 -LTRStruct -ninja_dir /scratch/jr4253/bin/NINJA-0.95-cluster_only/NINJA
+
+#=============
+# Get NINJA
+#=============
+# wget https://github.com/TravisWheelerLab/NINJA/archive/refs/tags/0.98-cluster_only.tar.gz
+# tar -zxvf 0.98-cluster_only.tar.gz
+# cd NINJA-0.98-cluster_only/NINJA/
+# make # Create the ‘‘Ninja’’ executable file
+# pwd
